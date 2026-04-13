@@ -1,54 +1,45 @@
-# Firmware de stabilisation pour balance de vol
+# Firmware de vol pour quadricoptère – PIC18F57Q43 + BNO055
 
+**Statut** : ✅ Opérationnel (stabilisation roll/pitch)  
+**Cible** : Drone de type quadricoptère (4 moteurs)
 
-**Microcontrôleur** : PIC18F57Q43 @ 64 MHz  
-**Capteur** : BNO055 (fusion de capteurs, angles Euler)  
-**Actionneurs** : 2 moteurs DC via PWM (pont en H L293D)  
-**Outils** : MPLAB X IDE v6.x, XC8 compiler v2.x
+## Caractéristiques
+- Microcontrôleur : PIC18F57Q43 @ 64 MHz
+- Capteur d'orientation : BNO055 (fusion complète, UART)
+- 4 sorties PWM (16 bits) pour ESC brushless
+- PID proportionnel-dérivé (P+D) sur les axes roulis et tangage
+- Communication série (115200 bauds) vers PC pour debug
 
----
+## Mixage moteurs (configuration X)
+- M1 = gaz + roll + pitch
+- M2 = gaz - roll + pitch
+- M3 = gaz + roll - pitch
+- M4 = gaz - roll - pitch
 
-## 📌 Description
-
-Projet académique visant à fiabiliser la commande de vol d'un drone.
-Il implémente un **firmware temps réel** qui :
-
-- Configure le BNO055 en mode NDOF (fusion complète)
-- Lit les angles de roulis (Roll) via UART
-- Calcule une correction PID proportionnelle‑dérivée (P+D)
-- Applique une commande différentielle sur deux moteurs via PWM
-- Envoie les trames brutes vers un PC (MATLAB / interface de visualisation)
-
-Le système a été validé sur une **balance de vol** à deux moteurs (configuration bicoptère) et constitue une base pour un futur drone stabilisé.
-
----
-
-## ⚙️ Fonctionnalités
-
-- ✅ Initialisation du BNO055 (mode config, page 0, unités degrés)
-- ✅ Lecture des angles Euler (Heading, Roll, Pitch) sur 6 octets
-- ✅ PID avec consigne réglable (exemple : stabilisation à -45° pour test)
-- ✅ Génération PWM 16 bits sur deux canaux (CCP1, CCP2)
-- ✅ Interruption UART pour réception des trames IMU
-- ✅ Communication série de diagnostic (vers PC)
-
-
-## 🔌 Brochage matériel (extrait)
-
-| PIC18F57Q43 | Composant              |
+## Brochage principal
+| PIC18F57Q43 | Fonction               |
 |-------------|------------------------|
-| RB1 (RX)    | BNO055 – TX            |
-| RB2 (TX)    | BNO055 – RX            |
-| RC1         | PWM – Moteur 1 (CCP2)  |
-| RC5         | PWM – Moteur 2 (CCP1)  |
-| RF4, RF5    | LCD (optionnel)        |
-| RD0–RD7     | LCD (optionnel)        |
+| RB1 (RX)    | BNO055 TX              |
+| RB2 (TX)    | BNO055 RX              |
+| RC5         | CCP1 → Moteur 1        |
+| RC1         | CCP2 → Moteur 2        |
+| RC2         | CCP3 → Moteur 3        |
+| RC3         | CCP4 → Moteur 4        |
+| RF0         | UART1 TX → PC          |
 
-## 📚 Références
+## Utilisation
+1. Ouvrir `mplab_project/` dans MPLAB X IDE.
+2. Compiler avec XC8 (v2.00+).
+3. Flasher le PIC.
+4. Alimenter le drone et observer la stabilisation.
 
-- [PIC18F57Q43 Datasheet](https://www.microchip.com/wwwproducts/en/PIC18F57Q43)
-- [BNO055 Datasheet](https://www.bosch-sensortec.com/products/smart-sensors/bno055/)
+## Améliorations possibles
+- Ajout d'un terme intégral (PID complet)
+- Réglage des gains par télémétrie
+- Gestion du lacet (yaw) via magnétomètre
 
-## 📝 Licence
+## Auteur
+Chris TSAGUE – [LinkedIn](https://linkedin.com/in/chris-tsague)
 
-MIT – voir fichier `LICENSE`.
+## Licence
+MIT
