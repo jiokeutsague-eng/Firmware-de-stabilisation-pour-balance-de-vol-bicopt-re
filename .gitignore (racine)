@@ -1,0 +1,38 @@
+# MPLAB X IDE
+build/
+dist/
+nbproject/private/
+*.X/
+*.mcp
+*.mcw
+*.cof
+*.hex
+*.lst
+*.o
+*.obj
+*.elf
+*.map
+*.d
+*.log
+*.bak
+*.err
+*.sym
+*.p1
+*.pre
+*.as
+*.lst
+
+# XC8 compiler
+*.p1
+*.pre
+*.as
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# VSCode
+.vscode/
