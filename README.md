@@ -1,4 +1,5 @@
-# Firmware de stabilisation pour balance de vol / bicoptère
+# Firmware de stabilisation pour balance de vol
+
 
 **Microcontrôleur** : PIC18F57Q43 @ 64 MHz  
 **Capteur** : BNO055 (fusion de capteurs, angles Euler)  
